@@ -1,13 +1,27 @@
 package com.lht.shardingjdbc;
 
-import org.junit.jupiter.api.Test;
+import com.lht.shardingjdbc.entity.Course;
+import com.lht.shardingjdbc.mapper.CourseMapper;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 @SpringBootTest
-class ShardingjdbcApplicationTests {
+@RunWith(SpringRunner.class)
+public class ShardingjdbcApplicationTests {
+
+    @Autowired
+    private CourseMapper courseMapper;
 
     @Test
-    void contextLoads() {
+    public void addCourse() {
+        Course course = new Course();
+        course.setName("数学");
+        course.setUserId(100L);
+        course.setState(0);
+        courseMapper.insert(course);
     }
 
 }

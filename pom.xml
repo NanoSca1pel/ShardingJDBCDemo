@@ -8,10 +8,10 @@
         <version>2.2.1.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.lht</groupId>
-    <artifactId>shardingjdbc</artifactId>
+    <groupId>com.atguigu</groupId>
+    <artifactId>shardingjdbcdemo</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>shardingjdbc</name>
+    <name>shardingjdbcdemo</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>
@@ -54,7 +54,6 @@
             <artifactId>lombok</artifactId>
         </dependency>
     </dependencies>
-
 
     <build>
         <plugins>
