@@ -1,6 +1,5 @@
 package com.lht.shardingjdbc.entity;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
