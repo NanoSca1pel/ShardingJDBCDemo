@@ -37,13 +37,13 @@ spring:
           # 配置垂直分库
           t_user:
             actual-data-nodes: ds$->{3}.t_user  #指定数据库分库分表情况，数据库里面表分布情况
-            key-generator:
-              column: id
-              type: SNOWFLAKE
-            table-strategy:
-              inline:
-                sharding-column: id
-                algorithm-expression: t_user
+#            key-generator:
+#              column: id
+#              type: SNOWFLAKE
+#            table-strategy:
+#              inline:
+#                sharding-column: id
+#                algorithm-expression: t_user
           course:
             actual-data-nodes: ds$->{1..2}.course_$->{1..2}  #指定数据库分库分表情况，数据库里面表分布情况
           # 指定course表里面主键cid 生成策略  SNOWFLAKE

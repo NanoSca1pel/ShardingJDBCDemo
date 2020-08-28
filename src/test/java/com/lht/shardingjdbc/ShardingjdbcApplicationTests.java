@@ -1,12 +1,17 @@
 package com.lht.shardingjdbc;
 
+import com.baomidou.mybatisplus.core.conditions.AbstractWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.lht.shardingjdbc.entity.Course;
-import com.lht.shardingjdbc.entity.Dict;
-import com.lht.shardingjdbc.entity.User;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.lht.shardingjdbc.entity.*;
 import com.lht.shardingjdbc.mapper.CourseMapper;
 import com.lht.shardingjdbc.mapper.DictMapper;
 import com.lht.shardingjdbc.mapper.UserMapper;
+import com.sun.org.apache.bcel.internal.generic.NEW;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -104,5 +109,61 @@ public class ShardingjdbcApplicationTests {
         //queryWrapper.eq("id", 1296340652127858690L);
         Dict dict = dictMapper.selectOne(queryWrapper);
         System.out.println(dict);
+    }
+
+
+    //lambda()下只能用User::get属性构造，非lambda模式可以使用i->操作
+    @Test
+    public void test1() {
+        /*QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.select("id","username").eq("username", "钱老板").apply("id=1296340652127858691");*/
+        /*User u = new User();
+        queryWrapper.setEntity(u);
+        queryWrapper.select(i -> i.getProperty().startsWith("id")).eq("username", "钱老板");*/
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        LambdaQueryWrapper<User> lambdaQueryWrapper = queryWrapper.lambda().select(User::getId,User::getUsername).eq(User::getUsername, "钱老板");
+        User user = userMapper.selectOne(lambdaQueryWrapper);
+        System.out.println(user);
+    }
+
+    @Test
+    public void test2() {
+        User u = new User();
+        UpdateWrapper<User> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.setSql("state = 2").apply("id=1296340652127858690");
+        LambdaUpdateWrapper<User> lambdaUpdateWrapper = updateWrapper.lambda().eq(User::getId, "1298159727963455489").set(User::getUsername, "李老板");
+        int update = userMapper.update(u,lambdaUpdateWrapper);
+        System.out.println(update);
+    }
+
+    @Test
+    public void test3() {
+        User user = new User();
+        user.setUsername("徐老板");
+        user.setState(1);
+        boolean insert = user.insert();
+        System.out.println(insert);
+
+        user.setUsername("蔡徐坤");
+        boolean update = user.updateById();
+        System.out.println(update);
+
+        User result = user.selectById();
+        System.out.println(result.toString());
+
+
+        boolean delete = user.deleteById(1L);
+        System.out.println(delete);
+    }
+
+    @Test
+    public void test4() {
+        UserPage userPage = new UserPage();
+        userPage.setCurrent(1);
+        userPage.setSize(1);
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("id", 1296340652127858690L);
+        IPage<SampleUser> page = userMapper.selectPage(userPage, queryWrapper);
+        System.out.println(page);
     }
 }
